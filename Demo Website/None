@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apex Pro ANC Headphones — LumenStore</title>
+  <style>
+    :root {
+      --blue: #2563eb; --text: #0f172a; --muted: #64748b;
+      --bg: #f1f5f9; --white: #ffffff; --border: #e2e8f0;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; }
+
+    nav { background: var(--text); padding: 0 32px; display: flex; align-items: center; justify-content: space-between; height: 60px; position: sticky; top: 0; z-index: 50; }
+    .nav-logo { font-size: 18px; font-weight: 900; color: #fff; letter-spacing: -0.5px; display: flex; align-items: center; gap: 8px; }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a { color: rgba(255,255,255,0.7); font-size: 13px; font-weight: 500; text-decoration: none; }
+    .nav-cart { background: var(--blue); color: #fff; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 6px; }
+    .badge { background: #ef4444; color: #fff; border-radius: 99px; padding: 0 5px; font-size: 10px; font-weight: 700; }
+
+    .breadcrumb { max-width: 1100px; margin: 20px auto; padding: 0 24px; font-size: 12px; color: var(--muted); display: flex; gap: 6px; }
+    .breadcrumb a { color: var(--muted); text-decoration: none; }
+
+    .product-wrap { max-width: 1100px; margin: 0 auto; padding: 0 24px 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    @media (max-width: 768px) { .product-wrap { grid-template-columns: 1fr; } }
+
+    .gallery-main { background: linear-gradient(145deg, #1e293b, #0f172a); border-radius: 16px; height: 400px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+    .gallery-main::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 60% 40%, rgba(37,99,235,0.25), transparent 70%); }
+    .product-svg { width: 220px; height: 220px; filter: drop-shadow(0 20px 40px rgba(37,99,235,0.4)); position: relative; z-index: 1; }
+    .gallery-badge { position: absolute; top: 14px; left: 14px; background: linear-gradient(135deg,#10b981,#059669); color: #fff; font-size: 11px; font-weight: 700; padding: 5px 12px; border-radius: 99px; z-index: 2; }
+    .thumbs { display: flex; gap: 10px; margin-top: 14px; }
+    .thumb { width: 72px; height: 72px; background: var(--white); border-radius: 10px; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 22px; cursor: pointer; }
+    .thumb.active { border-color: var(--blue); }
+
+    .info-panel { display: flex; flex-direction: column; padding-top: 4px; }
+    .brand-tag { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--blue); margin-bottom: 8px; }
+    .product-title { font-size: 26px; font-weight: 800; line-height: 1.2; margin-bottom: 10px; letter-spacing: -0.5px; }
+    .ratings-row { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; font-size: 13px; }
+    .stars { color: #f59e0b; font-size: 14px; }
+    .review-count { color: var(--muted); }
+
+    .price-box { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+    .price-label-small { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 4px; }
+    .price-top-row { display: flex; align-items: flex-end; gap: 12px; }
+    .main-price { font-size: 40px; font-weight: 900; color: var(--text); letter-spacing: -1px; line-height: 1; }
+    .original-price { font-size: 18px; color: var(--muted); text-decoration: line-through; }
+    .discount-tag { background: #dcfce7; color: #15803d; font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 6px; }
+
+    .actions { display: flex; gap: 12px; margin-bottom: 22px; }
+    .btn-cart { flex: 1; background: var(--blue); color: #fff; border: none; padding: 14px; font-size: 14px; font-weight: 700; border-radius: 10px; cursor: pointer; }
+    .btn-buy { flex: 1; background: var(--text); color: #fff; border: none; padding: 14px; font-size: 14px; font-weight: 700; border-radius: 10px; cursor: pointer; }
+
+    .delivery-strip { display: flex; flex-direction: column; gap: 8px; padding: 14px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-bottom: 18px; }
+    .delivery-item { display: flex; align-items: center; gap: 10px; font-size: 13px; }
+    .delivery-item .icon { font-size: 16px; width: 24px; text-align: center; }
+
+    .feature-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .feature-tag { background: #f8fafc; border: 1px solid var(--border); color: var(--muted); font-size: 12px; font-weight: 500; padding: 6px 12px; border-radius: 8px; }
+
+    footer { background: #1e293b; color: rgba(255,255,255,0.4); text-align: center; padding: 24px; margin-top: 40px; font-size: 12px; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo"><span>🔵</span> LUMEN STORE</div>
+  <div class="nav-links">
+    <a href="#">Audio</a><a href="#">Laptops</a><a href="#">Phones</a><a href="#">Deals</a>
+  </div>
+  <div class="nav-right">
+    <a href="#" class="nav-cart">🛒 Cart <span class="badge">2</span></a>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="#">Home</a> › <a href="#">Audio</a> › <a href="#">Headphones</a> › <span>Apex Pro ANC</span>
+</div>
+
+<div class="product-wrap">
+  <div>
+    <div class="gallery-main">
+      <span class="gallery-badge">🏆 Best Seller 2026</span>
+      <svg class="product-svg" viewBox="0 0 120 120" fill="none">
+        <path d="M20 60 C20 35 38 18 60 18 C82 18 100 35 100 60" stroke="#3b82f6" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <rect x="10" y="55" width="20" height="30" rx="8" fill="#3b82f6"/>
+        <rect x="90" y="55" width="20" height="30" rx="8" fill="#3b82f6"/>
+        <circle cx="20" cy="70" r="4" fill="#60a5fa"/>
+        <circle cx="100" cy="70" r="4" fill="#60a5fa"/>
+      </svg>
+    </div>
+    <div class="thumbs">
+      <div class="thumb active">🎧</div><div class="thumb">📦</div><div class="thumb">🔌</div><div class="thumb">📱</div>
+    </div>
+  </div>
+
+  <div class="info-panel">
+    <div class="brand-tag">LumenAudio • Premium Series</div>
+    <h1 class="product-title">Apex Pro Wireless Noise-Canceling Headphones</h1>
+    <div class="ratings-row">
+      <span class="stars">★★★★★</span><strong>4.9</strong>
+      <span class="review-count">(2,847 verified reviews)</span>
+    </div>
+    <div class="price-box">
+      <span class="price-label-small">Today's Price</span>
+      <div class="price-top-row">
+        <div class="main-price" id="product-price">$199.99</div>
+        <div class="original-price">$279.99</div>
+        <div class="discount-tag">Save 29%</div>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn-cart">Add to Cart</button>
+      <button class="btn-buy">Buy Now</button>
+    </div>
+    <div class="delivery-strip">
+      <div class="delivery-item"><span class="icon">🚚</span><span>Free delivery by <strong>Tomorrow, Aug 21</strong></span></div>
+      <div class="delivery-item"><span class="icon">↩️</span><span>30-day hassle-free returns</span></div>
+      <div class="delivery-item"><span class="icon">🛡️</span><span>2-Year Manufacturer Warranty</span></div>
+    </div>
+    <div class="feature-tags">
+      <span class="feature-tag">🎵 Hi-Fi 40mm Drivers</span>
+      <span class="feature-tag">🔋 50hr Battery</span>
+      <span class="feature-tag">🎤 6-Mic Array</span>
+      <span class="feature-tag">📶 Bluetooth 5.3</span>
+    </div>
+  </div>
+</div>
+
+<!-- ❌ No disclosure text anywhere on this page -->
+<footer>&copy; 2026 LumenStore Inc. All rights reserved. | Privacy | Terms</footer>
+</body>
+</html>
+
