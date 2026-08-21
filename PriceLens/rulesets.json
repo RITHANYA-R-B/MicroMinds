@@ -1,0 +1,87 @@
+[
+  {
+    "id": "ny",
+    "label": "New York (Algorithmic Pricing Disclosure Act)",
+    "disclosurePatterns": [
+      "this price (was|is) set (using|by) (an )?algorithm",
+      "personalized (pric(ing|e)|discount|offer)",
+      "price (was|is) (determined|calculated|set|adjusted) (using|based on) (your )?(personal )?(data|information|history|activity|location|device)",
+      "your account (activity|history|status) may affect the price",
+      "pric(e|ing)([^.]{0,80})? (may|might) (vary|differ|change)",
+      "dynamic pric(ing|e)",
+      "price(s)? (may|might) (change|vary) (depending|based) on",
+      "based on your (browsing|location|device|account|demand)",
+      "individualized price",
+      "this offer (was|is) tailored (for|to) you",
+      "prices? (may|might|can) vary",
+      "price match(ing| guarantee)?",
+      "prices? subject to change"
+    ],
+    "minFontSizePx": 12,
+    "minContrastRatio": 4.5,
+    "maxProximityPx": 300
+  },
+  {
+    "id": "maryland",
+    "label": "Maryland (Protection from Predatory Pricing Act)",
+    "disclosurePatterns": [
+      "this price (was|is) set (using|by) (an )?algorithm",
+      "personalized (pric(ing|e)|discount|offer)",
+      "price (was|is) (determined|calculated|set|adjusted) (using|based on) (your )?(personal )?(data|information|history|activity|location|device)",
+      "your account (activity|history|status) may affect the price",
+      "pric(e|ing)([^.]{0,80})? (may|might) (vary|differ|change)",
+      "dynamic pric(ing|e)",
+      "price(s)? (may|might) (change|vary) (depending|based) on",
+      "based on your (browsing|location|device|account|demand)",
+      "individualized price",
+      "this offer (was|is) tailored (for|to) you",
+      "prices? (may|might|can) vary",
+      "price match(ing| guarantee)?",
+      "prices? subject to change"
+    ],
+    "minFontSizePx": 12,
+    "minContrastRatio": 4.5,
+    "maxProximityPx": 300
+  },
+  {
+    "id": "eu",
+    "label": "European Union (DSA / GDPR Pricing Transparency)",
+    "disclosurePatterns": [
+      "this price (was|is) set (using|by) (an )?algorithm",
+      "personalized (pric(ing|e)|discount|offer)",
+      "price (was|is) (determined|calculated|set|adjusted) (using|based on) (your )?(personal )?(data|information|history|activity|location|device)",
+      "pric(e|ing)([^.]{0,80})? (may|might) (vary|differ|change)",
+      "dynamic pric(ing|e)",
+      "based on your (browsing|location|device|account|demand)",
+      "price personalisation",
+      "this price has been (customised|personalized) for you",
+      "price (was|is) based on profiling",
+      "prices? (may|might|can) vary"
+    ],
+    "minFontSizePx": 12,
+    "minContrastRatio": 4.5,
+    "maxProximityPx": 300
+  },
+  {
+    "id": "generic",
+    "label": "General Transparency Check (No Specific Law)",
+    "disclosurePatterns": [
+      "this price (was|is) set (using|by) (an )?algorithm",
+      "personalized (pric(ing|e)|discount|offer)",
+      "price (was|is) (determined|calculated|set|adjusted) (using|based on) (your )?(personal )?(data|information|history|activity|location|device)",
+      "your account (activity|history|status) may affect the price",
+      "pric(e|ing)([^.]{0,80})? (may|might) (vary|differ|change)",
+      "dynamic pric(ing|e)",
+      "price(s)? (may|might) (change|vary) (depending|based) on",
+      "based on your (browsing|location|device|account|demand)",
+      "individualized price",
+      "this offer (was|is) tailored (for|to) you",
+      "prices? (may|might|can) vary",
+      "price match(ing| guarantee)?",
+      "prices? subject to change"
+    ],
+    "minFontSizePx": 12,
+    "minContrastRatio": 4.5,
+    "maxProximityPx": 300
+  }
+]

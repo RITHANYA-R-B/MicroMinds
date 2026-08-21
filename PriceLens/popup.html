@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PriceLens</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+
+  <div class="header">
+    <div class="brand">
+      <div class="logo-box">🔍</div>
+      <div>
+        <div class="brand-name">PriceLens</div>
+      </div>
+    </div>
+    <div class="tagline">Price Conspicuousness Auditor</div>
+  </div>
+
+  <div class="content">
+
+    <!-- Jurisdiction Selector -->
+    <div>
+      <div class="control-label">
+        Simulate Jurisdiction
+        <span class="demo-tag">Demo Mode</span>
+      </div>
+      <div class="select-wrap">
+        <select id="jurisdiction-select" class="select-input">
+          <option value="ny">⚖️ New York — Algorithmic Pricing Disclosure Act</option>
+          <option value="maryland">⚖️ Maryland — Protection from Predatory Pricing</option>
+          <option value="eu">🇪🇺 European Union — DSA / GDPR</option>
+          <option value="generic">🌐 Generic — General Transparency Check</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Re-run Audit -->
+    <button id="rerun-btn" class="btn-primary">
+      ⚡ Re-run Page Audit
+    </button>
+
+    <!-- Result Card -->
+    <div class="result-card">
+      <div class="result-card-header pending" id="result-header">
+        <span class="result-icon" id="res-icon">⌛</span>
+        <span class="result-label pending" id="res-label">Loading result...</span>
+      </div>
+      <div class="result-body">
+        <div class="summary-text" id="res-summary">Scanning active tab for price disclosures...</div>
+        <div id="res-failures" style="display:none;">
+          <div class="failures-title">Compliance Failures</div>
+          <ul class="reasons-list" id="res-reasons"></ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="popup-footer">🔍 PriceLens · Price Transparency Auditor · v1.0</div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
