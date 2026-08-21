@@ -463,22 +463,26 @@
       : `⚖️ ${rules.label}`;
 
     container.innerHTML = `
-      <!-- Badge Pill (always visible) -->
-      <div class="pricelens-badge-pill ${classification.colorClass}" id="pricelens-pill-btn">
+      <!-- Badge Pill (always visible, draggable) -->
+      <div class="pricelens-badge-pill ${classification.colorClass}" id="pricelens-pill-btn" title="Drag to move anywhere, click to inspect">
+        <span class="pricelens-drag-grip">⋮⋮</span>
         <span class="pricelens-pill-icon">${classification.icon}</span>
         <span class="pricelens-pill-title">${classification.label}</span>
+        <button class="pricelens-pill-close-btn" id="pricelens-pill-close-btn" title="Dismiss badge" aria-label="Dismiss">&times;</button>
       </div>
 
       <!-- Expandable Popover Panel -->
       <div class="pricelens-popover" id="pricelens-popover-panel">
 
-        <!-- Sticky Header -->
-        <div class="pricelens-popover-header">
+        <!-- Sticky Header (draggable handle) -->
+        <div class="pricelens-popover-header" id="pricelens-popover-header" title="Drag to move">
           <div class="pricelens-popover-brand">
             <div class="pricelens-brand-logo">🔍</div>
             <div class="pricelens-brand-name">PriceLens</div>
           </div>
-          <button class="pricelens-close-btn" id="pricelens-close-btn" aria-label="Close">&times;</button>
+          <div class="pricelens-header-actions">
+            <button class="pricelens-close-btn" id="pricelens-close-btn" title="Close details" aria-label="Close">&times;</button>
+          </div>
         </div>
 
         <!-- Body -->
@@ -505,27 +509,137 @@
           <!-- Server Personalization Check -->
           <div class="pricelens-section-title">Server Price Verification</div>
           <div class="pricelens-personalization-box">
-            <div class="pricelens-perso-title">🌐 Unauthenticated HTML Check</div>
+            <div class="pricelens-perso-title">🌐 Unauthenticated Baseline Check</div>
             <div class="pricelens-perso-msg" id="pricelens-personalization-msg">
               Fetching logged-out page price...
             </div>
           </div>
 
-          <!-- Footer -->
-          <div class="pricelens-footer">🔍 PriceLens · Price Transparency Auditor · v1.0</div>
+          <!-- Footer with Dismiss link -->
+          <div class="pricelens-footer">
+            <span>PriceLens v1.0</span>
+            <span class="pricelens-dismiss-link" id="pricelens-dismiss-link">✕ Hide badge on this page</span>
+          </div>
         </div>
       </div>`;
 
-    // Event listeners
-    document.getElementById('pricelens-pill-btn').addEventListener('click', e => {
+    // ── Draggable Functionality ──────────────────────────────
+    let isDragging = false;
+    let hasMoved = false;
+    let startX, startY, initLeft, initTop;
+
+    function initDrag(e) {
+      if (e.target.closest('#pricelens-pill-close-btn') || 
+          e.target.closest('#pricelens-close-btn') || 
+          e.target.closest('#pricelens-dismiss-link')) {
+        return;
+      }
+      isDragging = true;
+      hasMoved = false;
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      startX = clientX;
+      startY = clientY;
+
+      const rect = container.getBoundingClientRect();
+      initLeft = rect.left;
+      initTop = rect.top;
+
+      document.addEventListener('mousemove', onDragMove);
+      document.addEventListener('mouseup', onDragEnd);
+      document.addEventListener('touchmove', onDragMove, { passive: false });
+      document.addEventListener('touchend', onDragEnd);
+    }
+
+    function onDragMove(e) {
+      if (!isDragging) return;
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      const dx = clientX - startX;
+      const dy = clientY - startY;
+
+      if (Math.abs(dx) > 4 || Math.abs(dy) > 4) {
+        hasMoved = true;
+        if (e.cancelable) e.preventDefault();
+        container.style.right = 'auto';
+        container.style.bottom = 'auto';
+        container.style.width = 'max-content';
+        container.style.maxWidth = 'max-content';
+        const pillWidth = container.offsetWidth || 160;
+        const newLeft = Math.max(10, Math.min(window.innerWidth - pillWidth - 10, initLeft + dx));
+        const newTop = Math.max(10, Math.min(window.innerHeight - 60, initTop + dy));
+        container.style.left = `${newLeft}px`;
+        container.style.top = `${newTop}px`;
+      }
+    }
+
+    function onDragEnd() {
+      isDragging = false;
+      document.removeEventListener('mousemove', onDragMove);
+      document.removeEventListener('mouseup', onDragEnd);
+      document.removeEventListener('touchmove', onDragMove);
+      document.removeEventListener('touchend', onDragEnd);
+    }
+
+    const pillBtn = document.getElementById('pricelens-pill-btn');
+    const popoverHeader = document.getElementById('pricelens-popover-header');
+
+    pillBtn.addEventListener('mousedown', initDrag);
+    pillBtn.addEventListener('touchstart', initDrag, { passive: true });
+    popoverHeader.addEventListener('mousedown', initDrag);
+    popoverHeader.addEventListener('touchstart', initDrag, { passive: true });
+
+    // Toggle popover on click (only if not dragged)
+    pillBtn.addEventListener('click', e => {
+      if (hasMoved) return;
+      if (e.target.closest('#pricelens-pill-close-btn')) return;
       e.stopPropagation();
-      document.getElementById('pricelens-popover-panel').classList.toggle('open');
+      const panel = document.getElementById('pricelens-popover-panel');
+      const isOpening = !panel.classList.contains('open');
+
+      if (isOpening) {
+        // Smart floating position calculation based on current viewport coordinates
+        const rect = container.getBoundingClientRect();
+        const spaceBelow = window.innerHeight - rect.bottom;
+        const spaceAbove = rect.top;
+
+        if (spaceBelow < 420 && spaceAbove > 350) {
+          // Open upwards
+          panel.style.top = 'auto';
+          panel.style.bottom = 'calc(100% + 10px)';
+        } else {
+          // Open downwards
+          panel.style.bottom = 'auto';
+          panel.style.top = 'calc(100% + 10px)';
+        }
+
+        if (rect.left < 220) {
+          // Align left
+          panel.style.right = 'auto';
+          panel.style.left = '0px';
+        } else {
+          // Align right
+          panel.style.left = 'auto';
+          panel.style.right = '0px';
+        }
+      }
+
+      panel.classList.toggle('open');
     });
 
+    // Close / Collapse popover
     document.getElementById('pricelens-close-btn').addEventListener('click', e => {
       e.stopPropagation();
       document.getElementById('pricelens-popover-panel').classList.remove('open');
     });
+
+    // Dismiss / Hide badge entirely on this page
+    const dismissHandler = (e) => {
+      e.stopPropagation();
+      container.remove();
+    };
+    document.getElementById('pricelens-pill-close-btn').addEventListener('click', dismissHandler);
+    document.getElementById('pricelens-dismiss-link').addEventListener('click', dismissHandler);
 
     document.addEventListener('click', e => {
       if (!container.contains(e.target)) {
@@ -537,9 +651,6 @@
     if (personalizationData) updatePersonalizationUI(personalizationData);
   }
 
-  /* ──────────────────────────────────────────────────────────
-     Personalization UI Updater
-  ────────────────────────────────────────────────────────── */
   function updatePersonalizationUI(data) {
     const el = document.getElementById('pricelens-personalization-msg');
     if (!el) return;
@@ -547,7 +658,7 @@
       el.textContent = `Fetch blocked: ${data.error || 'CORS / bot protection'}`;
       return;
     }
-    if (data.strippedPrices?.length) {
+    if (data.strippedPrices && data.strippedPrices.length > 0) {
       el.innerHTML = `Server HTML prices found:<div class="pricelens-prices-list">${data.strippedPrices.map(p => `<span class="pricelens-price-tag">${p}</span>`).join('')}</div>`;
     } else {
       el.textContent = 'No prices found in unauthenticated server HTML.';
